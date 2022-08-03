@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="breadcrumb-area pt-35 pb-35 bg-gray">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/">Главная</a>
+                </li>
+                <li class="active">Ответы по поиск</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="shop-area pt-95 pb-100">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-12">
+                <div class="shop-top-bar">
+                    <div class="select-shoing-wrap">
+                        <div class="shop-select">
+                            <select>
+                                <option value="">Sort by newness</option>
+                                <option value="">A to Z</option>
+                                <option value=""> Z to A</option>
+                                <option value="">In stock</option>
+                            </select>
+                        </div>
+                        <p>Showing 1–12 of 20 result</p>
+                    </div>
+                    <div class="shop-tab nav">
+                        <a class="active" href="#shop-1" data-toggle="tab">
+                            <i class="sli sli-grid"></i>
+                        </a>
+                        <a href="#shop-2" data-toggle="tab">
+                            <i class="sli sli-menu"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="shop-bottom-area mt-35">
+                    <div class="tab-content jump">
+                        <div id="shop-1" class="tab-pane active">
+                            <div class="row ht-products">
+                                {% for si in search_items %}
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                    <!--Product Start-->
+                                    <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                                        <div class="ht-product-inner">
+                                            <div class="ht-product-image-wrap">
+                                                <a href="/good/{{ si.id }}/" class="ht-product-image"> <img
+                                                        src="/media/{{ si.logo }}" alt="{{ si.title }}"> </a>
+                                                <div class="ht-product-action">
+                                                    <ul>
+                                                        <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i
+                                                                class="sli sli-magnifier"></i><span
+                                                                class="ht-product-action-tooltip">Quick View</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-wish-list"
+                                                               data-id="{{ si.id }}"><i class="sli sli-heart"></i><span
+                                                                class="ht-product-action-tooltip">Добавить в избранные</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-compare-list"
+                                                               data-id="{{ si.id }}"><i
+                                                                class="sli sli-refresh"></i><span
+                                                                class="ht-product-action-tooltip">Добавить для сравнения</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-cart" data-id="{{ si.id }}"><i
+                                                                class="sli sli-bag"></i><span
+                                                                class="ht-product-action-tooltip">Добавить в корзину</span></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="ht-product-content">
+                                                <div class="ht-product-content-inner">
+                                                    <div class="ht-product-categories"><a
+                                                            href="/catalog/{{ si.category.id }}">{{ si.category.title
+                                                        }}</a></div>
+                                                    <h4 class="ht-product-title"><a href="product-details.html">{{
+                                                        si.title }}</a></h4>
+                                                    <div class="ht-product-price">
+                                                        <span class="new">${{ si.price }}</span>
+                                                        <span class="old">${{ si.old_price }}</span>
+                                                    </div>
+                                                    <div class="ht-product-ratting-wrap">
+                                                            <span class="ht-product-ratting">
+                                                                <span class="ht-product-user-ratting"
+                                                                      style="width: 100%;">
+                                                                    {% if si.rating > 0 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if si.rating > 1 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if si.rating > 2 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if si.rating > 3 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if si.rating > 4 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                </span>
+                                                            {% if si.rating > 0 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if si.rating > 1 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if si.rating > 2 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if si.rating > 3 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if si.rating > 4 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <div class="ht-product-action">
+                                                    <ul>
+                                                        <li><a href="#"><i class="sli sli-magnifier"></i><span
+                                                                class="ht-product-action-tooltip">Quick View</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-wish-list"
+                                                               data-id="{{ si.id }}"><i class="sli sli-heart"></i><span
+                                                                class="ht-product-action-tooltip">Добавить в избранные</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-compare-list"
+                                                               data-id="{{ si.id }}"><i
+                                                                class="sli sli-refresh"></i><span
+                                                                class="ht-product-action-tooltip">Добавить для сравнения</span></a>
+                                                        </li>
+                                                        <li><a href="#" class="js-add-to-cart" data-id="{{ si.id }}"><i
+                                                                class="sli sli-bag"></i><span
+                                                                class="ht-product-action-tooltip">Добавить в корзину</span></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="ht-product-countdown-wrap">
+                                                    <div class="ht-product-countdown" data-countdown="2020/01/01"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Product End-->
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div id="shop-2" class="tab-pane">
+                            {% for si in search_items %}
+                            <div class="shop-list-wrap shop-list-mrg2 shop-list-mrg-none mb-30">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="product-list-img">
+                                            <a href="product-details.html">
+                                                <img src="/media/{{ si.logo }}" alt="{{ si.title }}">
+                                            </a>
+                                            <div class="product-quickview">
+                                                <a href="#" title="Quick View" data-toggle="modal"
+                                                   data-target="#exampleModal"><i class="sli sli-magnifier-add"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 align-self-center">
+                                        <div class="shop-list-content">
+                                            <h3><a href="product-details.html">{{ si.title }}</a></h3>
+                                            <p>{{ si.description }}</p>
+                                            <span>{{ si.category.title }}</span>
+                                            <div class="shop-list-price-action-wrap">
+                                                <div class="shop-list-price-ratting">
+                                                    <div class="ht-product-list-price">
+                                                        <span class="new">${{ si.price }}</span>
+                                                        <span class="old">${{ si.old_price }}</span>
+                                                    </div>
+                                                    <div class="ht-product-list-ratting">
+                                                        {% if si.rating > 0 %}
+                                                        <i class="sli sli-star"></i>
+                                                        {% endif %}
+                                                        {% if si.rating > 1 %}
+                                                        <i class="sli sli-star"></i>
+                                                        {% endif %}
+                                                        {% if si.rating > 2 %}
+                                                        <i class="sli sli-star"></i>
+                                                        {% endif %}
+                                                        {% if si.rating > 3 %}
+                                                        <i class="sli sli-star"></i>
+                                                        {% endif %}
+                                                        {% if si.rating > 4 %}
+                                                        <i class="sli sli-star"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="ht-product-list-action">
+                                                    <a class="list-wishlist js-add-to-wish-list" data-id="{{ si.id }}"
+                                                       title="Добавить в избранные" href="#"><i
+                                                            class="sli sli-heart"></i></a>
+                                                    <a class="list-cart js-add-to-cart" data-id="{{ si.id }}"
+                                                       title="Добавить в корзину" href="#"><i
+                                                            class="sli sli-basket-loaded"></i> Добавить в корзину</a>
+                                                    <a class="list-refresh js-add-to-compare-list" data-id="{{ si.id }}"
+                                                       title="Добавить для сравнения" href="#"><i
+                                                            class="sli sli-refresh"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="pro-pagination-style text-center mt-30">
+                        <ul>
+                            <li><a class="prev" href="#"><i class="sli sli-arrow-left"></i></a></li>
+                            <li><a class="active" href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a class="next" href="#"><i class="sli sli-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,458 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="/">Главная</a>
+                    </li>
+                    {% if active_category.parent %}
+                    <li>
+                        <a href="/catalog/{{ active_category.parent.id }}">{{ active_category.parent.title }}</a>
+                    </li>
+                    {% endif %}
+                    <li class="active"> {{ active_category.title }} </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="shop-area pt-95 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="shop-top-bar">
+                        <div class="select-shoing-wrap">
+                            <form action="/catalog/{{ active_category.id }}/" method="GET">
+                                <div class="shop-select">
+                                    <select name="order_by">
+                                        <option type="submit" value="title">A to Z</option>
+                                        <option type="submit" value="-title"> Z to A</option>
+                                    </select>
+                                </div>
+                            </form>
+                            <p>Показано {{ start }} – {{ stop }} из {{ total }} найденных</p>
+                        </div>
+                        <div class="shop-tab nav">
+                            <a class="active" href="#shop-1" data-toggle="tab">
+                                <i class="sli sli-grid"></i>
+                            </a>
+                            <a href="#shop-2" data-toggle="tab">
+                                <i class="sli sli-menu"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="shop-bottom-area mt-35">
+                        <div class="tab-content jump">
+                            <div id="shop-1" class="tab-pane active">
+                                <div class="row ht-products">
+                                    {% for good in goods %}
+                                    <div class="col-xl-4 col-md-6 col-lg-6 col-sm-6">
+                                        <!--Product Start-->
+                                        <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                                            <div class="ht-product-inner">
+                                                <div class="ht-product-image-wrap">
+                                                    <div class="zoompro-border zoompro-span" style="background-color: #ff3535; width: 40px;">
+                                                        <span>{% if good.discount > 0 %} -{{ good.discount }}% {% endif %}</span>
+                                                    </div>
+                                                    <a href="/good/{{ good.id }}" class="ht-product-image"> <img src="/media/{{ good.logo }}" alt="Universal Product Style"> </a>
+                                                    <div class="ht-product-action">
+                                                        <ul>
+                                                            <li><a href="#" class="js-add-to-search" data-id="{{ good.id }}" data-toggle="modal" data-target="#exampleModal"><i class="sli sli-magnifier"></i><span class="ht-product-action-tooltip">Быстрый просмотр</span></a></li>
+                                                            <li><a href="#" class="js-add-to-wish-list" data-id="{{ good.id }}"><i class="sli sli-heart"></i><span class="ht-product-action-tooltip">Добавить в избранные</span></a></li>
+                                                            <li><a href="#" class="js-add-to-compare-list" data-id="{{ good.id }}"><i class="sli sli-refresh"></i><span class="ht-product-action-tooltip">Добавить для сравнения</span></a></li>
+                                                            <li><a href="#" class="js-add-to-cart" data-id="{{ good.id }}"><i class="sli sli-bag"></i><span class="ht-product-action-tooltip">Добавить в корзину</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="ht-product-content">
+                                                    <div class="ht-product-content-inner">
+                                                        <div class="ht-product-categories"><a href="#">{{ good.brand.title }}</a></div>
+                                                        <h4 class="ht-product-title"><a href="/good/{{ good.id }}/">{{ good.title }}</a></h4>
+                                                        <div class="ht-product-price">
+                                                            <span class="new">${{ good.price }}</span>
+                                                            <span class="old">${{ good.old_price }}</span>
+                                                        </div>
+                                                        <div class="ht-product-ratting-wrap">
+                                                            <span class="ht-product-ratting">
+                                                                <span class="ht-product-user-ratting" style="width: 100%;">
+                                                                    {% if good.rating > 0 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if good.rating > 1 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if good.rating > 2 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if good.rating > 3 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                    {% if good.rating > 4 %}
+                                                                    <i class="sli sli-star"></i>
+                                                                    {% endif %}
+                                                                </span>
+                                                            {% if good.rating > 0 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 1 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 2 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 3 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 4 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ht-product-action">
+                                                        <ul>
+                                                            <li><a href="#"><i class="sli sli-magnifier"></i><span class="ht-product-action-tooltip">Quick</span></a></li>
+                                                            <li><a href="#" class="js-add-to-wish-list" data-id="{{ good.id }}"><i class="sli sli-heart"></i><span class="ht-product-action-tooltip">Добавить в избранные</span></a></li>
+                                                            <li><a href="#" class="js-add-to-compare-list" data-id="{{ good.id }}"><i class="sli sli-refresh"></i><span class="ht-product-action-tooltip">Добавить для сравнения</span></a></li>
+                                                            <li><a href="#" class="js-add-to-cart" data-id="{{ good.id }}"><i class="sli sli-bag"></i><span class="ht-product-action-tooltip">Добавить в корзину</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="ht-product-countdown-wrap">
+                                                        <div class="ht-product-countdown" data-countdown="2020/01/01"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Product End-->
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div id="shop-2" class="tab-pane">
+                                {% for good in goods %}
+                                <div class="shop-list-wrap shop-list-mrg2 shop-list-mrg-none mb-30">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="product-list-img">
+                                                <div class="zoompro-border zoompro-span" style="background-color: #ff3535; width: 40px;">
+                                                    <span>{% if good.discount > 0 %} -{{ good.discount }}% {% endif %}</span>
+                                                </div>
+                                                <a href="/good/{{ good.id }}">
+                                                    <img src="/media/{{ good.logo }}" alt="Universal Product Style">
+                                                </a>
+                                                <div class="product-quickview">
+                                                    <a href="#" class="js-add-to-search" data-id="{{ good.id }}" title="Быстрый просмотр" data-toggle="modal" data-target="#exampleModal"><i class="sli sli-magnifier-add"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 align-self-center">
+                                            <div class="shop-list-content">
+                                                <h3><a href="/good/{{ good.id }}">{{ good.title }}</a></h3>
+                                                <p>{{ good.mini_description }}</p>
+                                                <span>{{ good.brand.title }}</span>
+                                                <div class="shop-list-price-action-wrap">
+                                                    <div class="shop-list-price-ratting">
+                                                        <div class="ht-product-list-price">
+                                                            <span class="new">${{ good.price }}</span>
+                                                            <span class="old">${{ good.old_price }}</span>
+                                                        </div>
+                                                        <div class="ht-product-list-ratting">
+                                                            {% if good.rating > 0 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 1 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 2 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 3 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                            {% if good.rating > 4 %}
+                                                            <i class="sli sli-star"></i>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="ht-product-list-action">
+                                                        <a class="list-wishlist js-add-to-wish-list" data-id="{{ good.id }}" title="Добавить в избранные" href="#"><i class="sli sli-heart"></i></a>
+                                                        <a class="list-cart js-add-to-cart" data-id="{{ good.id }}" title="Добавить в корзину" href="#"><i class="sli sli-basket-loaded"></i> Добавить в корзину</a>
+                                                        <a class="list-refresh js-add-to-compare-list" data-id="{{ good.id }}" title="Добавить для сравнения" href="#"><i class="sli sli-refresh"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="pro-pagination-style text-center mt-30">
+                            <ul>
+                                {% if current_page != 1 %}
+                                    <li><a class="prev" href="/catalog/{{ active_category.id }}?page= {{ prev_page }}"><i class="sli sli-arrow-left"></i></a></li>
+                                {% endif %}
+                                {% for p in pages %}
+                                    <li><a {% if current_page == p %} class="active" {% endif %} href="/catalog/{{ active_category.id }}?page={{ p }}"> {{ p }}</a></li>
+                                {% endfor %}
+                                {% if next_page %}
+                                    <li><a class="next" href="/catalog/{{ active_category.id }}?page= {{ next_page }}"><i class="sli sli-arrow-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="sidebar-style ml-30">
+                        <form class="" action="/catalog/{{ active_category.id }}">
+                        <div class="sidebar-widget">
+                            <h4 class="pro-sidebar-title">Поиск </h4>
+                            <div class="pro-sidebar-search mb-50 mt-25">
+                                <div class="pro-sidebar-search-form">
+                                    <input name="q" type="text" placeholder="Поиск ..."{% if q %} value="{{ q }}" {% endif %}>
+                                    <button>
+                                        <i class="sli sli-magnifier"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h4 class="pro-sidebar-title"> По признакам  </h4>
+                            <div class="sidebar-widget-list mt-30">
+                                <ul>
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input type="checkbox" name="is_discount" {% if is_discount %} checked {% endif %} value="1"> <a href="#"> Скидки <span> 0 </span> </a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input type="checkbox" name="is_new" {% if is_new %} checked {% endif %} value="1"> <a href="#">Новые<span>0</span></a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input type="checkbox" name="stock" {% if stock %} checked {% endif %} value="1"> <a href="#">Наличие<span>0</span> </a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget mt-45">
+                            <h4 class="pro-sidebar-title">Сортировать по цену</h4>
+                            <div class="price-filter mt-10">
+                                <div class="price-slider-amount">
+                                    <input type="text" id="amount" name="price"  placeholder="Введите вашу цену" />
+                                </div>
+                                <div id="slider-range"></div>
+                            </div>
+                        </div>
+                        {% if brands %}
+                        <div class="sidebar-widget mt-50">
+                            <h4 class="pro-sidebar-title">Бренд</h4>
+                            <div class="sidebar-widget-list mt-20">
+                                <ul>
+                                    {% for brand in brands %}
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input name="active_brand" type="checkbox" {% if brand.id in active_brands %} checked="checked" {% endif %} value="{{ brand.id }}"> <a href="#">{{ brand.title }}<span>0</span> </a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if colors %}
+                        <div class="sidebar-widget mt-50">
+                            <h4 class="pro-sidebar-title">Цвет</h4>
+                            <div class="sidebar-widget-list mt-20">
+                                <ul>
+                                    {% for color in colors %}
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input name="active_color" type="checkbox" {% if color.id in active_colors %} checked {% endif %} value="{{ color.id }}"> <a href="#">{{ color.title }}<span>0</span> </a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if sizes %}
+                        <div class="sidebar-widget mt-40">
+                            <h4 class="pro-sidebar-title">Размер </h4>
+                            <div class="sidebar-widget-list mt-20">
+                                <ul>
+                                    {% for size in sizes %}
+                                    <li>
+                                        <div class="sidebar-widget-list-left">
+                                            <input name="active_size" type="checkbox" {% if size.id in active_sizes %} checked {% endif %} value="{{ size.id }}"> <a href="#">{{ size.title }} - {{ size.code }}<span>0</span> </a>
+                                            <span class="checkmark"></span>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if tag %}
+                        <div class="sidebar-widget mt-50">
+                            <h4 class="pro-sidebar-title">Tag </h4>
+                            <div class="sidebar-widget-tag mt-25">
+                                <ul>
+                                    {% for tag in tag %}
+                                    <li><a href="#">{{ tag.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                            <button style="background-color: red; color: white; border: 0; height: 40px;"> Применить </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="tab-content quickview-big-img">
+                                <div id="pro-1" class="tab-pane fade show active">
+                                    <img class="js-search-logo" src="" alt="">
+                                </div>
+                                <div id="pro-2" class="tab-pane fade">
+                                    <img src="" alt="">
+                                </div>
+                                <div id="pro-3" class="tab-pane fade">
+                                    <img src="assets/img/product/quickview-l3.svg" alt="">
+                                </div>
+                                <div id="pro-4" class="tab-pane fade">
+                                    <img src="assets/img/product/quickview-l2.svg" alt="">
+                                </div>
+                            </div>
+                            <!-- Thumbnail Large Image End -->
+                            <!-- Thumbnail Image End -->
+                            <div class="quickview-wrap mt-15">
+                                <div class="quickview-slide-active owl-carousel nav nav-style-2" role="tablist">
+                                    <a class="active" data-toggle="tab" href="#pro-1"><img style="width: 100px;" class="js-search-logo4" src="" alt=""></a>
+                                    <a data-toggle="tab" class="get-img" href="#pro-2"><img style="width: 100px;" class="js-search-logo" src="" alt=""></a>
+                                    <a data-toggle="tab" href="#pro-3"><img style="width: 100px;" class="js-search-logo3 " src="" alt=""></a>
+                                    <a data-toggle="tab" href="#pro-4"><img style="width: 100px;" class="js-search-logo2" src="" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="product-details-content quickview-content">
+                                <h2 class="js-search-title">
+<!--                                    place for title-->
+                                </h2>
+                                <div class="product-details-price">
+                                    <span class="js-search-price">
+<!--                                        place for price-->
+                                    </span>
+                                    <span class="old js-search-old-price">
+<!--                                        place for old price-->
+                                    </span>
+                                </div>
+                                <div class="pro-details-rating-wrap">
+                                    <div class="pro-details-rating">
+<!--                                        for views-->
+                                    </div>
+                                </div>
+<!--                                <div class="pro-details-list">-->
+<!--                                    <ul>-->
+<!--                                        <li>- 0.5 mm Dail</li>-->
+<!--                                        <li>- Inspired vector icons</li>-->
+<!--                                        <li>- Very modern style  </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+                                <div class="pro-details-size-color">
+                                    <div class="pro-details-color-wrap">
+                                        <span>Color</span>
+                                        <div class="pro-details-color-content">
+                                            <ul>
+                                                <li class="js-search-color"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="pro-details-size">
+                                        <span>Size</span>
+                                        <div class="pro-details-size-content">
+                                            <ul>
+                                                <li class="js-search-size"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p></p>
+                                <span class="js-search-mini-title"></span>
+                                <span class="js-search-mini-description">
+<!--                                    place for mini_description-->
+                                </span>
+                                <div class="pro-details-quality js-modal-container">
+                                    <form action="/cart/" method="post" style="display: flex;">
+                                        <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box" type="text" name="amount" value="1">
+                                        </div>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_cart">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="">
+                                        <div class="pro-details-cart">
+                                            <button >Добавить в корзину</button>
+                                        </div>
+                                    </form>
+                                    <form action="/cart/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_wish_list">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="/wish/">
+                                        <div class="pro-details-wishlist">
+                                            <button style="background-color: white; border: none;" title="Добавить в избранные"><i class="sli sli-heart"></i></button>
+                                        </div>
+                                    </form>
+                                    <form action="/cart/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_compare_list">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="/compare/">
+                                        <div class="pro-details-compare">
+                                            <button style="background-color: white; border: none;" title="Добавить для сравнения"><i class="sli sli-refresh"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+<!--                                <div class="pro-details-meta">-->
+<!--                                    <span>Категории :</span>-->
+<!--                                    <ul>-->
+<!--                                        <li><a href="#" class="js-search-category"></a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="/">Главная</a>
+                    </li>
+                    <li class="active"> Корзина </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="cart-main-area pt-95 pb-100">
+        <div class="container">
+            <h3 class="cart-page-title">Ваши товары </h3>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-content table-responsive cart-table-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Лого </th>
+                                        <th>Название</th>
+                                        <th>Цена за единицу</th>
+                                        <th>Количество</th>
+                                        <th>Итог</th>
+                                        <th>Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for  cartitem in cart_items %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="#"><img style="width: 100px;" src="/media/{{ cartitem.good.logo }}" alt=""></a>
+                                        </td>
+                                        <td class="product-name"><a href="#">{{ cartitem.good.title}}</a></td>
+                                        <td class="product-price-cart"><span class="amount">{{ cartitem.price }}</span></td>
+                                        <td class="product-quantity">
+                                            {{ cartitem.amount }}
+<!--                                            <div class="cart-plus-minus">-->
+<!--                                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">-->
+<!--                                            </div>-->
+                                        </td>
+                                        <td class="product-subtotal">{{ cartitem.all_price }}</td>
+                                        <td class="product-remove">
+<!--                                            <a href="#"><i class="sli sli-pencil"></i></a>-->
+                                            <form action="/cart/" method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="remove_from_cart">
+                                                <input type="hidden" name="good_id" value="{{cartitem.good.id}}">
+                                                <input type="hidden" name="return_url" value="/cart/">
+                                                <button ><i class="sli sli-close"></i></button>
+                                            </form>
+                                       </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="cart-shiping-update-wrapper">
+                                    <div class="cart-shiping-update">
+                                        <a href="/checkout/">Оформить заказ</a>
+                                    </div>
+                                    <div class="cart-clear">
+<!--                                        <button>Update Shopping Cart</button>-->
+
+
+                                        <form action="/cart/" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="clear_cart">
+                                            <input type="hidden" name="return_url" value="/cart/">
+                                            <button >Очистить корзину</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

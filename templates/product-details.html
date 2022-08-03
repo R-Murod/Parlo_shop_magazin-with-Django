@@ -1,0 +1,556 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .input:hover{
+        background-color: #f7735c;
+    }
+</style>
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="/">Главная</a>
+                    </li>
+                    {% if active_good.category %}
+                    <li>
+                        <a href="/catalog/{{ active_good.category.id }}/">{{ active_good.category.title }}</a>
+                    </li>
+                    {% endif %}
+                    <li class="active">{{ active_good.title }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="product-details-area pt-100 pb-95">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product-details-img">
+                        <div class="zoompro-border zoompro-span">
+                            <img class="zoompro" src="/media/{{ active_good.logo }}" data-zoom-image="/media/{{ active_good.logo }}" alt=""/>
+                            <span>-{{ active_good.discount }}%</span>
+                        </div>
+                        <div id="gallery" class="mt-20 product-dec-slider">
+                            <a data-image="assets/img/product-details/product-detalis-l1.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl1.jpg">
+                                <img style="width: 100px;" src="/media/{{ active_good.logo2 }}" alt="">
+                            </a>
+                            <a data-image="assets/img/product-details/product-detalis-l2.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl2.jpg">
+                                <img style="width: 100px;" src="/media/{{ active_good.logo3 }}" alt="">
+                            </a>
+                            <a data-image="assets/img/product-details/product-detalis-l3.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl3.jpg">
+                                <img style="width: 100px;" src="/media/{{ active_good.logo4 }}" alt="">
+                            </a>
+                            {% if active_good.logo5 %}
+                            <a data-image="assets/img/product-details/product-detalis-l4.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl4.jpg">
+                                <img style="width: 100px;" src="/media/{{ active_good.logo5 }}" alt="">
+                            </a>
+                            {% endif %}
+                            {% if active_good.logo6 %}
+                            <a data-image="assets/img/product-details/product-detalis-l5.jpg" data-zoom-image="assets/img/product-details/product-detalis-bl5.jpg">
+                                <img style="width: 100px;" src="/media/{{ active_good.logo6 }}" alt="">
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product-details-content ml-30">
+                        <h2>{{ active_good.title }}</h2>
+                        <div class="product-details-price">
+                            <span>${{ active_good.price }}</span>
+                            <span class="old">${{ active_good.old_price }}</span>
+                        </div>
+                        <div class="pro-details-rating-wrap">
+                            <div class="pro-details-rating">
+                                {% if active_good.rating > 0 %}
+                                <i class="sli sli-star yellow"></i>
+                                {% endif %}
+                                {% if active_good.rating > 1 %}
+                                <i class="sli sli-star yellow"></i>
+                                {% endif %}
+                                {% if active_good.rating > 2 %}
+                                <i class="sli sli-star yellow"></i>
+                                {% endif %}
+                                {% if active_good.rating > 3 %}
+                                <i class="sli sli-star yellow"></i>
+                                {% endif %}
+                                {% if active_good.rating > 4 %}
+                                <i class="sli sli-star yellow"></i>
+                                {% endif %}
+                            </div>
+                            <span><a href="#">{{ comment_len }} Отзывов</a></span>
+                        </div>
+                        <p>{{ active_good.mini_description }}</p>
+<!--                        <div class="pro-details-list">-->
+<!--                            <ul>-->
+<!--                                <li>- 0.5 mm Dail</li>-->
+<!--                                <li>- Inspired vector icons</li>-->
+<!--                                <li>- Very modern style  </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+                        <div class="pro-details-size-color">
+                            <div class="pro-details-color-wrap">
+                                <span>Цвет </span>
+                                <div class="pro-details-color-content">
+                                    <ul>
+                                        {% if active_good.color %}
+                                            <li style="background-color:{{ active_good.color.code }}" class="{{ active_good.color.code }}"></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="pro-details-size">
+                                <span>Размер</span>
+                                <div class="pro-details-size-content">
+                                    <ul>
+                                        {% if active_good.size %}
+                                            <li><a href="#">{{ active_good.size.code }}</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="pro-details-quality">
+                                <form action="/cart/" method="post" style="display: flex;">
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="text" name="amount" value="1">
+                                    </div>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="add_to_cart">
+                                    <input type="hidden" name="good_id" value="{{ active_good.id }}">
+                                    <input type="hidden" name="return_url" value="/good/{{ active_good.id }}/">
+                                    <div class="pro-details-cart btn-hover">
+                                        <button>Добавить в корзину</button>
+                                    </div>
+                                </form>
+                                <form action="/cart/" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="add_to_wish_list">
+                                    <input type="hidden" name="good_id" value="{{ active_good.id }}">
+                                    <input type="hidden" name="return_url" value="/good/{{ active_good.id }}/">
+                                    <div class="pro-details-wishlist">
+                                        <button style="background-color: white; border: none;" title="Добавить в избранные" href="#"><i class="sli sli-heart"></i></button>
+                                    </div>
+                                </form>
+                                <form action="/cart/" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="add_to_compare_list">
+                                    <input type="hidden" name="good_id" value="{{ active_good.id }}">
+                                    <input type="hidden" name="return_url" value="/good/{{ active_good.id }}/">
+
+                                    <div class="pro-details-compare">
+                                        <button style="background-color: white; border: none;" title="Добавить для сравнения" href="#"><i class="sli sli-refresh"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        <div class="pro-details-meta">
+                            <span>Категории :</span>
+                            <ul>
+                                {% if active_good.category and active_good.category.parent %}
+                                <li><a href="/catalog/{{ active_good.category.parent.id }}">{{ active_good.category.parent.title }} --> </a></li>
+                                {% endif %}
+                                {% if active_good.category %}
+                                <li><a href="/catalog/{{ active_good.category.id }}">{{ active_good.category.title }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+<!--                        <div class="pro-details-meta">-->
+<!--                            <span>Tag :</span>-->
+<!--                            <ul>-->
+<!--                                <li><a href="#">Fashion, </a></li>-->
+<!--                                <li><a href="#">Furniture,</a></li>-->
+<!--                                <li><a href="#">Electronic</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="description-review-area pb-95">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="description-review-wrapper">
+                        <div class="description-review-topbar nav">
+                            <a class="active" data-toggle="tab" href="#des-details1">Описание</a>
+                            <a data-toggle="tab" href="#des-details3">Дополнительная информация</a>
+                            <a data-toggle="tab" href="#des-details2" >Отзывы ({{ comment_len }})</a>
+                        </div>
+                        <div class="tab-content description-review-bottom">
+                            <div id="des-details1" class="tab-pane active">
+                                <div class="product-description-wrapper">
+                                    <p>{{ active_good.description }}</p>
+                                </div>
+                            </div>
+                            <div id="des-details3" class="tab-pane">
+                                <div class="product-anotherinfo-wrapper">
+                                    <p></p>
+                                    <ul>
+                                        <li><span>Платформа:</span> {{ active_good.weight }}</li>
+                                        <li><span>Разрешение экрана:</span>{{ active_good.dimensions }}</li>
+                                        <li><span>Объем оперативной памяти, Объем встроенной памяти:</span> {{ active_good.materials }}</li>
+                                        <li><span>Емкость аккумулятора: </span> {{ active_good.extra_info }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="des-details2" class="tab-pane">
+                                <div class="review-wrapper">
+                                    {% for com in comments %}
+                                    <div class="single-review">
+                                        <div class="review-img">
+                                            <img src="assets/img/product-details/client-1.jpg" alt="">
+                                        </div>
+                                        <div class="review-content">
+                                            <p>{{ com.text }}</p>
+                                            <div class="review-top-wrap" >
+                                                <div class="review-name">
+                                                    <h4>{{ com.name }}</h4>
+                                                </div>
+                                                <div class="review-rating">
+                                                    {% if com.rating > 0 %}
+                                                    <i class="sli sli-star"></i>
+                                                    {% endif %}
+                                                    {% if com.rating > 1 %}
+                                                    <i class="sli sli-star"></i>
+                                                    {% endif %}
+                                                    {% if com.rating > 2 %}
+                                                    <i class="sli sli-star"></i>
+                                                    {% endif %}
+                                                    {% if com.rating > 3 %}
+                                                    <i class="sli sli-star"></i>
+                                                    {% endif %}
+                                                    {% if com.rating > 4 %}
+                                                    <i class="sli sli-star"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <form action="/good/{{ active_good.id }}/" method="post" id="form1">
+                                    {% csrf_token %}
+                                <div class="ratting-form-wrapper">
+                                    <span style="font-size: 24px;">Насколко оцениваете?</span>
+                                    <input type="text" class="js-input" name="rating" value="">
+                                    <div class="star-box-wrap">
+                                        <div class="single-ratting-star">
+                                            <i class="sli sli-star js-count-1"></i>
+                                        </div>
+                                        <div class="single-ratting-star">
+                                            <i class="sli sli-star js-count-2"></i>
+                                            <i class="sli sli-star js-count-2"></i>
+                                        </div>
+                                        <div class="single-ratting-star">
+                                            <i class="sli sli-star js-count-3"></i>
+                                            <i class="sli sli-star js-count-3"></i>
+                                            <i class="sli sli-star js-count-3"></i>
+                                        </div>
+                                        <div class="single-ratting-star">
+                                            <i class="sli sli-star js-count-4"></i>
+                                            <i class="sli sli-star js-count-4"></i>
+                                            <i class="sli sli-star js-count-4"></i>
+                                            <i class="sli sli-star js-count-4"></i>
+                                        </div>
+                                        <div class="single-ratting-star">
+                                            <i class="sli sli-star js-count-5"></i>
+                                            <i class="sli sli-star js-count-5"></i>
+                                            <i class="sli sli-star js-count-5"></i>
+                                            <i class="sli sli-star js-count-5"></i>
+                                            <i class="sli sli-star js-count-5"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ratting-form">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="rating-form-style mb-20">
+                                                        <label>Комментария <span>*</span></label>
+                                                        <textarea name="text"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="rating-form-style mb-20">
+                                                       <label>Имя <span>*</span></label>
+                                                        <input type="text" name="name" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="rating-form-style mb-20">
+                                                       <label>Емайл <span>*</span></label>
+                                                        <input type="email" name="email" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="form-submit">
+                                                        <a href="#des-details2"><input class="input" type="submit" value="Отправить"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="pro-dec-banner">
+                        <a href="#"><img src="assets/img/banner/banner-15.png" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-area pb-150">
+        <div class="container">
+            <div class="section-title text-center pb-60">
+                <h2>Похожее продукты</h2>
+                <p></p>
+            </div>
+            <div class="arrivals-wrap item-wrapper">
+                <div class="ht-products row">
+                    <!--Product Start-->
+                    {% for ng in related_goods %}
+                        <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom toggle-item-active col-lg-3 col-md-6 col-sm-6 col-12 mb-30">
+                        <div class="ht-product-inner">
+                            <div class="ht-product-image-wrap">
+                                <div class="zoompro-border zoompro-span" style="background-color: #ff3535; width: 40px;">
+                                    <span>{% if ng.discount > 0 %} -{{ ng.discount }}% {% endif %}</span>
+                                </div>
+                                <a href="/good/{{ ng.id }}/" class="ht-product-image"> <img src="/media/{{ ng.logo }}" alt="{{ ng.title }}"> </a>
+                                <div class="ht-product-action">
+                                    <ul>
+                                        <li><a href="#" class="js-add-to-search" data-toggle="modal" data-id="{{ ng.id }}" data-target="#exampleModal"><i class="sli sli-magnifier"></i><span class="ht-product-action-tooltip">Быстрый просмотр</span></a></li>
+                                        <li><a href="#" class="js-add-to-wish-list" data-id="{{ ng.id }}"><i class="sli sli-heart"></i><span class="ht-product-action-tooltip">Добавить в избранные</span></a></li>
+                                        <li><a href="#" class="js-add-to-compare-list" data-id="{{ ng.id }}"><i class="sli sli-refresh"></i><span class="ht-product-action-tooltip">Добавить для сравнения</span></a></li>
+                                        <li><a href="#" class="js-add-to-cart" data-id="{{ ng.id }}"><i class="sli sli-bag"></i><span class="ht-product-action-tooltip">Добавить в корзину</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ht-product-content">
+                                <div class="ht-product-content-inner">
+                                    <div class="ht-product-categories"><a href="/catalog/{{ ng.category.title }}">{{ ng.category.title }}</a></div>
+                                    <h4 class="ht-product-title"><a href="/good/{{ ng.id }}">{{ ng.title }}</a></h4>
+                                    <div class="ht-product-price">
+                                        <span class="new">${{ ng.price }}</span>
+                                    </div>
+                                    <div class="ht-product-ratting-wrap">
+                                        <span class="ht-product-ratting">
+                                            <span class="ht-product-user-ratting" style="width: 100%;">
+                                                {% if ng.rating > 0 %}
+                                                <i class="sli sli-star"></i>
+                                                {% endif %}
+                                                {% if ng.rating > 1 %}
+                                                <i class="sli sli-star"></i>
+                                                {% endif %}
+                                                {% if ng.rating > 2 %}
+                                                <i class="sli sli-star"></i>
+                                                {% endif %}
+                                                {% if ng.rating > 3 %}
+                                                <i class="sli sli-star"></i>
+                                                {% endif %}
+                                                {% if ng.rating > 4 %}
+                                                <i class="sli sli-star"></i>
+                                                {% endif %}
+                                            </span>
+                                        {% if ng.rating > 0 %}
+                                        <i class="sli sli-star"></i>
+                                        {% endif %}
+                                        {% if ng.rating > 1 %}
+                                        <i class="sli sli-star"></i>
+                                        {% endif %}
+                                        {% if ng.rating > 2 %}
+                                        <i class="sli sli-star"></i>
+                                        {% endif %}
+                                        {% if ng.rating > 3 %}
+                                        <i class="sli sli-star"></i>
+                                        {% endif %}
+                                        {% if ng.rating > 4 %}
+                                        <i class="sli sli-star"></i>
+                                        {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ht-product-action">
+                                    <ul>
+                                        <li><a href="#"><i class="sli sli-magnifier"></i><span class="ht-product-action-tooltip">Быстрый просмотр</span></a></li>
+                                        <li><a href="#"><i class="sli sli-heart"></i><span class="ht-product-action-tooltip">Добавить в избранную</span></a></li>
+                                        <li><a href="#"><i class="sli sli-refresh"></i><span class="ht-product-action-tooltip">Добавить для сравнение</span></a></li>
+                                        <li><a href="#"><i class="sli sli-bag"></i><span class="ht-product-action-tooltip">Добавить в корзину</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="ht-product-countdown-wrap">
+                                    <div class="ht-product-countdown" data-countdown="2020/01/01"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!--Product End-->
+                </div>
+                <div class="show-more-btn text-center mt-10 toggle-btn">
+                    {% if related_goods|length > 4 %}
+                        <a class="loadMore" href="#">Загрузить еще</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/static/js/jquery-3.6.0.min.js"></script>
+<script>
+    $('#form1').submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+         $.ajax({
+             type: 'POST',
+             dataType: 'json',
+             url: $("#form1").attr("action"),
+             data: serializedData,
+             success: function (d) {
+                 if(d['status']==true){
+                     alert("Your comment add!!!")
+                     location.reload()
+                 }else{
+                     alert(d['errors'])
+                 }
+             },
+             error: function (d){
+                 alert("errors")
+             }
+         });
+    });
+</script>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="tab-content quickview-big-img">
+                                <div id="pro-1" class="tab-pane fade show active">
+                                    <img class="js-search-logo" src="" alt="">
+                                </div>
+                                <div id="pro-2" class="tab-pane fade">
+                                    <img src="" alt="">
+                                </div>
+                                <div id="pro-3" class="tab-pane fade">
+                                    <img src="assets/img/product/quickview-l3.svg" alt="">
+                                </div>
+                                <div id="pro-4" class="tab-pane fade">
+                                    <img src="assets/img/product/quickview-l2.svg" alt="">
+                                </div>
+                            </div>
+                            <!-- Thumbnail Large Image End -->
+                            <!-- Thumbnail Image End -->
+                            <div class="quickview-wrap mt-15">
+                                <div class="quickview-slide-active owl-carousel nav nav-style-2" role="tablist">
+                                    <a class="active" data-toggle="tab" href="#pro-1"><img style="width: 100px;" class="js-search-logo4" src="" alt=""></a>
+                                    <a data-toggle="tab" class="get-img" href="#pro-2"><img style="width: 100px;" class="js-search-logo" src="" alt=""></a>
+                                    <a data-toggle="tab" href="#pro-3"><img style="width: 100px;" class="js-search-logo3 " src="" alt=""></a>
+                                    <a data-toggle="tab" href="#pro-4"><img style="width: 100px;" class="js-search-logo2" src="" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="product-details-content quickview-content">
+                                <h2 class="js-search-title">
+<!--                                    place for title-->
+                                </h2>
+                                <div class="product-details-price">
+                                    <span class="js-search-price">
+<!--                                        place for price-->
+                                    </span>
+                                    <span class="old js-search-old-price">
+<!--                                        place for old price-->
+                                    </span>
+                                </div>
+                                <div class="pro-details-rating-wrap">
+                                    <div class="pro-details-rating">
+<!--                                        for views-->
+                                    </div>
+                                </div>
+<!--                                <div class="pro-details-list">-->
+<!--                                    <ul>-->
+<!--                                        <li>- 0.5 mm Dail</li>-->
+<!--                                        <li>- Inspired vector icons</li>-->
+<!--                                        <li>- Very modern style  </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+                                <div class="pro-details-size-color">
+                                    <div class="pro-details-color-wrap">
+                                        <span>Color</span>
+                                        <div class="pro-details-color-content">
+                                            <ul>
+                                                <li class="js-search-color"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="pro-details-size">
+                                        <span>Size</span>
+                                        <div class="pro-details-size-content">
+                                            <ul>
+                                                <li class="js-search-size"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p></p>
+                                <span class="js-search-mini-title"></span>
+                                <span class="js-search-mini-description">
+<!--                                    place for mini_description-->
+                                </span>
+                                <div class="pro-details-quality js-modal-container">
+                                    <form action="/cart/" method="post" style="display: flex;">
+                                        <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box" type="text" name="amount" value="1">
+                                        </div>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_cart">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="">
+                                        <div class="pro-details-cart">
+                                            <button >Добавить в корзину</button>
+                                        </div>
+                                    </form>
+                                    <form action="/cart/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_wish_list">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="/wish/">
+                                        <div class="pro-details-wishlist">
+                                            <button style="background-color: white; border: none;" title="Добавить в избранные"><i class="sli sli-heart"></i></button>
+                                        </div>
+                                    </form>
+                                    <form action="/cart/" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="add_to_compare_list">
+                                        <input type="hidden" name="good_id" value="">
+                                        <input type="hidden" name="return_url" value="/compare/">
+                                        <div class="pro-details-compare">
+                                            <button style="background-color: white; border: none;" title="Добавить для сравнения"><i class="sli sli-refresh"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+<!--                                <div class="pro-details-meta">-->
+<!--                                    <span>Категории :</span>-->
+<!--                                    <ul>-->
+<!--                                        <li><a href="#" class="js-search-category"></a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="/">Главная</a>
+                    </li>
+                    <li class="active">Избранные</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="cart-main-area pt-95 pb-100">
+        <div class="container">
+            <h3 class="cart-page-title">Ваши избранные товары</h3>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-content table-responsive cart-table-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Лого</th>
+                                        <th>Название</th>
+                                        <th>Цена</th>
+                                        <th>Категория</th>
+                                        <th>Добавить в корзину</th>
+                                        <th>Удалить</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for wi in wish_list %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="/good/{{ wi.good.id }}/"><img style="width: 100px;" src="/media/{{ wi.good.logo }}" alt=""></a>
+                                        </td>
+                                        <td class="product-name"><a href="/good/{{ wi.good.id }}/">{{ wi.good.title }}</a></td>
+                                        <td class="product-price-cart"><span class="amount">${{ wi.good.price }}</span></td>
+                                        <td class="product-quantity"><a href="/catalog/{{ wi.good.category.id }}/">{{ wi.good.category.title }}</a></td>
+                                        <td class="product-wishlist-cart">
+                                            <form action="/cart/" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="add_to_cart">
+                                                <input type="hidden" name="good_id" value="{{ wi.good.id }}">
+                                                <input type="hidden" name="amount" value="1">
+                                                <input type="hidden" name="return_url" value="/wish/">
+                                                <button style="background-color: white; border: none;"> Добавить в корзину </button>
+                                            </form>
+                                        </td>
+                                        <td class="product-wishlist-cart">
+                                            <form action="/cart/" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="remove_from_wish_list">
+                                                <input type="hidden" name="good_id" value="{{ wi.good.id }}">
+                                                <input type="hidden" name="return_url" value="/wish/">
+                                                <button style="background-color: white; border: none;">Удалить</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

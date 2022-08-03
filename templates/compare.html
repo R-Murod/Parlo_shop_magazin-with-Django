@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="/">Главная</a>
+                    </li>
+                    <li class=""> Сравнение </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- compare main wrapper start -->
+    <div class="compare-page-wrapper pt-100 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Compare Page Content Start -->
+                    <div class="compare-page-content-wrap">
+                        <div class="compare-table table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                <tr>
+                                    <td class="first-column"> Продукт </td>
+                                    {% for com in compare_list %}
+                                    <td class="product-image-title">
+                                        <a href="/good/{{ com.good.id }}" class="image">
+                                            <img style="width: 300px;" class="img-fluid" src="/media/{{ com.good.logo }}" alt="">
+                                        </a>
+                                        <a href="/catalog/{{ com.good.category.id }}" class="category">{{ com.good.category.title }}</a>
+                                        <a href="/good/{{ com.good.id }}" class="title">{{ com.good.title }}</a>
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Описание</td>
+                                    {% for com in compare_list %}
+                                    <td class="pro-desc">
+                                        <p>{{ com.good.description }}</p>
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Цена</td>
+                                    {% for com in compare_list %}
+                                        <td class="pro-price">${{ com.good.price }}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Цвет</td>
+                                    {% for com in compare_list %}
+                                        <td class="pro-color">{{ com.good.color.title }}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Наличие</td>
+                                    {% for com in compare_list %}
+                                        <td class="pro-stock">{{ com.good.stock }}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Рейтинг</td>
+                                    {% for com in compare_list %}
+                                        <td class="pro-ratting">
+                                            {% if com.good.rating > 0 %}
+                                            <i class="sli sli-star"></i>
+                                            {% endif %}
+                                            {% if com.good.rating > 1 %}
+                                            <i class="sli sli-star"></i>
+                                            {% endif %}
+                                            {% if com.good.rating > 2 %}
+                                            <i class="sli sli-star"></i>
+                                            {% endif %}
+                                            {% if com.good.rating > 3 %}
+                                            <i class="sli sli-star"></i>
+                                            {% endif %}
+                                            {% if com.good.rating > 4 %}
+                                            <i class="sli sli-star"></i>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column"> Добавить в корзину </td>
+                                    {% for com in compare_list %}
+                                    <td>
+                                        <form action="/cart/" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="add_to_cart">
+                                            <input type="hidden" name="good_id" value="{{ com.good.id }}">
+                                            <input type="hidden" name="amount" value="1">
+                                            <input type="hidden" name="return_url" value="/compare/">
+                                            <button style="background-color: white; border: none;" class="check-btn"> Добавить в корзину </button>
+                                        </form>
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="first-column">Remove</td>
+                                    {% for com in compare_list %}
+                                        <td class="pro-remove">
+                                            <form action="/cart/" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="remove_from_compare_list">
+                                                <input type="hidden" name="good_id" value="{{ com.good.id }}">
+                                                <input type="hidden" name="return_url" value="/compare/">
+                                                <button><i class="sli sli-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Compare Page Content End -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
